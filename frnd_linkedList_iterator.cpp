@@ -1,20 +1,20 @@
 #include <iostream>
 using namespace std;
 
-class node;
-class list;
+class Node;
+class List;
 
-class iterator
+class Iterator
 
 {
-	node *node;
-	list *list;
+	Node *node;
+	List *list;
 
 	public:
 
-	iterator() : node (0), list(0)  {}
+	Iterator() : node (0), list(0)  {}
 
-	void begin(list *);
+	void begin(List *);
 	bool end();
 	void next();
 	int data();
@@ -22,78 +22,77 @@ class iterator
 };
 
 
-class list
+class List
 {
-	node *head;
-	node *tail;
+	Node *head;
+	Node *tail;
 
 	public:
 
-	list(node *h = 0) :  head(h), tail(h)  {}
-	void append(node *p);
-	friend class iterator;
+	List(Node *h = 0) :  head(h), tail(h)  {}
+	void append(Node *p);
+	friend class Iterator;
 };
 
-class node 
+class Node 
 {
 	int info;
-	node *next;
+	Node *next;
 	public:
 
-	node(int i) : info (i), next(0)  {}
+	Node(int i) : info (i), next(0)  {}
 	//friend void list::display();
 	//friend void list::append(node *);
-	friend class list;
-	friend class iterator;
+	friend class List;
+	friend class Iterator;
 };
-void iterator::begin(list *l)
+
+// Iterator method
+void Iterator::begin(List *l)
 {
 	list = l;
-	node = l->head;
+	node = l->head;  // set list & init
 }
 
-bool iterator::end()
+bool Iterator::end()
 {
 	return node == 0;
 }
 
-void iterator::next()
+void Iterator::next()
 {
 	node = node ->next;
 }
 
-int iterator::data()
+int Iterator::data()
 {
-	return = node->info;
+	return node->info;
 }
-void list::append(node *p)
-{
-	
-}
-
-void list::append(node *p)
+void List::append(Node *p)
 {
 	if(!head)
-	{
-		head = tail = p;
-	}
+		head  = tail = p;
 	else
 	{
 		tail->next = p;
-		tail = tail->next;
+		tail  = tail ->next;
 	}
 }
 
 int main()
 {
-	list l;
+	List l;
 
-	node n1(1), n2(2), n3(3);
+	Node n1(1), n2(2), n3(3);
 	l.append(&n1);
 	l.append(&n2);
 	l.append(&n3);
 
-	l.display();
+	Iterator i;
+	for(i.begin(&l); !i.end(); i.next())
+	{
+		cout <<  i.data() << " ";   // iteration loop
+	}
 
 	return 0;
 }
